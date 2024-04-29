@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+
+  redis:
+    build:
+      context: .
+      dockerfile: config/docker.local/redis.Dockerfile
+    restart: unless-stopped
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-redis'
+
+
+
+  mysql:
+    build:
+      context: .
+      dockerfile: config/docker.local/mysql.Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: sun-asterisk
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+    volumes:
+      - './storage/mysql:/var/log/mysql:delegated'
+      - './config/docker.local/config/mysql:/etc/mysql/conf.d:ro'
+      - 'mysql_data:/var/lib/mysql:delegated'
+    restart: unless-stopped
+    ports:
+      - '3308:3306'
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-mysql'
+
+
+
+  composer:
+    build:
+      context: .
+      dockerfile: config/docker.local/composer.Dockerfile
+    volumes:
+      - './:/var/www/html:delegated'
+      - 'composer_cache:/tmp'
+    tty: true
+    network_mode: host
+    container_name: 'sun-asterisk-composer'
+
+
+
+  phpdbg:
+    build:
+      context: .
+      dockerfile: config/docker.local/php-dbg.Dockerfile
+    volumes:
+      - './:/var/www/html:delegated'
+    tty: true
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-php-dbg'
+
+
+
+  php:
+    build:
+      context: .
+      dockerfile: config/docker.local/php-cli.Dockerfile
+    volumes:
+      - './:/var/www/html:delegated'
+    tty: true
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-php-cli'
+
+
+  phpserver:
+    build:
+      context: .
+      dockerfile: config/docker.local/php-server.Dockerfile
+    volumes:
+      - './:/var/www/html:delegated'
+    ports:
+      - '8003:8000'
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-php-server'
+
+
+  phpfpm:
+    build:
+      context: .
+      dockerfile: config/docker.local/php-fpm.Dockerfile
+    volumes:
+      - './:/var/www/html:delegated'
+    restart: unless-stopped
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-php-fpm'
+
+  sun-asterisk:
+    build:
+      context: .
+      dockerfile: config/docker.local/nginx.Dockerfile
+    ports:
+      - '8003:8000'
+    volumes:
+      - './:/var/www/html:delegated'
+      - './storage/nginx:/var/log/nginx:delegated'
+    restart: unless-stopped
+    depends_on:
+      - phpfpm
+      - mysql
+      - redis
+    networks:
+      - 'network-sun-asterisk'
+    container_name: 'sun-asterisk-nginx'
+
+networks:
+  network-sun-asterisk:
+
+
+
+volumes:
+  mysql_data:
+  elasticsearch_data:
+  composer_cache:
