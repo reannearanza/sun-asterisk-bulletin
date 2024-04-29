@@ -19,12 +19,15 @@ class CreateArticleTest extends TestCase
             'content' => 'Lorem Ipsum',
         ];
 
-        $response = $this->postJson(route('article.post'), $requestBody);
+        $response = $this->postJson(route('articles.store'), $requestBody);
 
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJson([
             'title'     => 'Article One',
-            'author'    => $this->testingUser->id,
+            'author'    => [
+                'id'   => $this->testingUser->id,
+                'name' => $this->testingUser->name
+            ],
             'content'   => 'Lorem Ipsum'
         ]);
 

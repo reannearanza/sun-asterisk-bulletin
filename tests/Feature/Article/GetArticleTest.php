@@ -17,7 +17,7 @@ class GetArticleTest extends TestCase
     {
         $testArticle = Article::factory()->create();
 
-        $response = $this->getJson(route('article.get', $testArticle->id));
+        $response = $this->getJson(route('articles.get', $testArticle->id));
 
         $response->assertStatus(Response::HTTP_OK);
 

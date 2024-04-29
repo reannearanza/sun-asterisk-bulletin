@@ -2,17 +2,6 @@ version: '3.8'
 
 services:
 
-  redis:
-    build:
-      context: .
-      dockerfile: config/docker.local/redis.Dockerfile
-    restart: unless-stopped
-    networks:
-      - 'network-sun-asterisk'
-    container_name: 'sun-asterisk-redis'
-
-
-
   mysql:
     build:
       context: .
@@ -45,19 +34,6 @@ services:
     tty: true
     network_mode: host
     container_name: 'sun-asterisk-composer'
-
-
-
-  phpdbg:
-    build:
-      context: .
-      dockerfile: config/docker.local/php-dbg.Dockerfile
-    volumes:
-      - './:/var/www/html:delegated'
-    tty: true
-    networks:
-      - 'network-sun-asterisk'
-    container_name: 'sun-asterisk-php-dbg'
 
 
 
@@ -97,7 +73,7 @@ services:
       - 'network-sun-asterisk'
     container_name: 'sun-asterisk-php-fpm'
 
-  sun-asterisk:
+  sun-asterisk-bulletin:
     build:
       context: .
       dockerfile: config/docker.local/nginx.Dockerfile
@@ -110,7 +86,6 @@ services:
     depends_on:
       - phpfpm
       - mysql
-      - redis
     networks:
       - 'network-sun-asterisk'
     container_name: 'sun-asterisk-nginx'

@@ -18,8 +18,9 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->testingUser = User::factory()->make([
-            'id'               => rand(1, 100),
-            'username'         => fake()->name(),
+            'id'               => 1,
+            'name'             => 'Sun Asterisk',
+            'username'         => 'sun_asterisk',
         ]);
 
         $this->actingAs($this->testingUser);

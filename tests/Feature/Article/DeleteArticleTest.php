@@ -17,11 +17,11 @@ class DeleteArticleTest extends TestCase
     {
         $testArticle = Article::factory()->create();
 
-        $response = $this->deleteJson(route('article.delete', $testArticle->id));
+        $response = $this->deleteJson(route('articles.delete', $testArticle->id));
 
         $response->assertStatus(Response::HTTP_NO_CONTENT);
 
-        $response = $this->getJson(route('article.get', $testArticle->id));
+        $response = $this->getJson(route('articles.get', $testArticle->id));
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }

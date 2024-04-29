@@ -17,7 +17,7 @@ class ListArticleTest extends TestCase
     {
         $testArticles = Article::factory(20)->create();
 
-        $response = $this->getJson(route('article.list'));
+        $response = $this->getJson(route('articles.list'));
 
         $response->assertStatus(Response::HTTP_OK);
 

@@ -20,11 +20,11 @@ class UpdateArticleTest extends TestCase
             'title' => 'Article One'
         ];
 
-        $response = $this->patch(route('article.update', $testArticle->id), $requestBody);
+        $response = $this->patch(route('articles.update', $testArticle->id), $requestBody);
 
         $response->assertStatus(Response::HTTP_OK);
 
-        $response = $this->getJson(route('article.get', $testArticle->id));
+        $response = $this->getJson(route('articles.get', $testArticle->id));
 
         $response->assertJson($requestBody);
 
