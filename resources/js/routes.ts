@@ -2,6 +2,7 @@ export const Routes = [
   {
     path: '/articles',
     name: 'home',
+    meta: { requiresAuth: true },
     component: () => import('./views/Home.vue'),
     children: [
       {

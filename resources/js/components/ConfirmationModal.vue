@@ -1,10 +1,12 @@
 <script setup lang="ts">
- import { defineProps } from 'vue';
+ import { defineProps, toRefs } from 'vue';
  
- const props = defineProps({
-   modelValue: Boolean
- })
+interface ConfirmationModalProps {
+  modelValue?: string
+}
 
+ const props = defineProps<ConfirmationModalProps>();
+ const { modelValue } = toRefs(props);
  const emit = defineEmits(['update:modelValue'])
 </script>
 <template>
@@ -15,7 +17,7 @@
         <p class="mb-4">Are you sure you want to delete this blog?</p>
         <div class="flex justify-end">
             <button
-              @click="emit('update:modelValue', false)"
+              @click="emit('update:modelValue', modelValue)"
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 mr-2 rounded">Confirm</button>
             <button
               @click="emit('update:modelValue', false)"

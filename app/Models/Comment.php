@@ -21,18 +21,18 @@ class Comment extends Model
     {
         static::creating(function ($comment) {
             $comment->key = Uuid::uuid4()->toString();
-            $comment->author = 1;
+            $comment->author = auth()->user()->id;
         });
 
         parent::boot();
     }
 
-    protected function authors()
+    public function authors()
     {
         return $this->belongsTo(User::class, 'author', 'id');
     }
 
-    protected function articles()
+    public function articles()
     {
         return $this->belongsTo(Article::class, 'articleKey', 'key');
     }

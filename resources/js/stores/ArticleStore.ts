@@ -10,7 +10,7 @@ const setup = () => {
   const getArticleList = () => {
     return new Promise((resolve, reject) => {
       axios
-      .get('/articles')
+      .get('/api/articles')
       .then((response) => {
         articleList.value = response.data;
         resolve(response.data);
@@ -24,7 +24,7 @@ const setup = () => {
   const getArticle = (key: string) => {
     return new Promise((resolve, reject) => {
       axios
-      .get(`/articles/${key}`)
+      .get(`/api/articles/${key}`)
       .then((response) => {
         article.value = response.data;
         resolve(response.data);
@@ -35,10 +35,10 @@ const setup = () => {
     })
   };
 
-  const createArticle = (article: any) => {
+  const createArticle = (payload: any) => {
     return new Promise((resolve, reject) => {
       axios
-      .post('/articles', article)
+      .post('/api/articles', payload)
       .then((response) => {
         resolve(response.data);
       })
@@ -48,10 +48,10 @@ const setup = () => {
     })
   };
 
-  const updateArticle = (key: string, article: any) => {
+  const updateArticle = (key: string, payload: any) => {
     return new Promise((resolve, reject) => {
       axios
-      .put(`/articles/${key}`, article)
+      .put(`/api/articles/${key}`, payload)
       .then((response) => {
         resolve(response.data);
       })
@@ -64,7 +64,20 @@ const setup = () => {
   const deleteArticle = (key: string) => {
     return new Promise((resolve, reject) => {
       axios
-      .delete(`/articles/${key}`)
+      .delete(`/api/articles/${key}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    })
+  };
+
+  const toggleUpvote = (key: string) => {
+    return new Promise((resolve, reject) => {
+      axios
+      .put(`/api/articles/${key}/upvote`)
       .then((response) => {
         resolve(response.data);
       })
@@ -81,8 +94,9 @@ const setup = () => {
     getArticle,
     createArticle,
     updateArticle,
-    deleteArticle
+    deleteArticle,
+    toggleUpvote
   };
 }
 
-export const articleStore = defineStore('articleStore', setup);
+export const useArticleStore = defineStore('articleStore', setup);

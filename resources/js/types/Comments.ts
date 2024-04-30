@@ -5,6 +5,7 @@ export interface Comment {
   author: {
     id: number
     name: string
+    username: string
   }
   createdAt: string
   updatedAt: string

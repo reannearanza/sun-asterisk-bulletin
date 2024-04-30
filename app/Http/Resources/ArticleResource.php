@@ -7,8 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
 {
-    public static $wrap = false;
-
     /**
      * Transform the resource into an array.
      *
@@ -17,12 +15,15 @@ class ArticleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'key'       => $this->key,
-            'title'     => $this->title,
-            'author'    => UserResource::make($this->authors),
-            'content'   => $this->content,
-            'createdAt' => $this->createdAt,
-            'updatedAt' => $this->updatedAt
+            'key'           => $this->key,
+            'title'         => $this->title,
+            'author'        => UserResource::make($this->authors),
+            'content'       => $this->content,
+            'upvotes'       => $this->upvotes()->count(),
+            'comments'      => $this->comments()->count(),
+            'upvotedByUser' => $this->upvotes()->where('user', $request->user()->id)->exists(),
+            'createdAt'     => $this->createdAt,
+            'updatedAt'     => $this->updatedAt
         ];
     }
 }

@@ -6,6 +6,6 @@ return [
     'content_max_length' => 65535
   ],
   'comments' => [
-    'content_max_length' => 65535
+    'comment_max_length' => 255
   ]
 ];

@@ -5,7 +5,10 @@ export interface Article {
   author: {
     id: number
     name: string
-  }
+  },
+  comments: number
+  upvotes: number
+  upvotedByUser: boolean
   createdAt: string
   updatedAt: string
 }

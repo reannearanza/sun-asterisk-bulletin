@@ -1,25 +1,37 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import LikesAndCommentsCounter from '../components/LikesAndCommentsCounter.vue';
-import CommentItem from '../components/CommentItem.vue';
 import CommentEditor from '../components/CommentEditor.vue';
+import { useArticleStore } from '../stores/ArticleStore';
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import CommentList from '../components/CommentList.vue';
 
+const articleStore = useArticleStore();
+const { article } = storeToRefs(articleStore);
 const showCommentEditor = ref(false);
-const articles = ref([]);
+const router = useRouter();
+
+const publishDate = computed(() => {
+    return new Date(article.value.createdAt).toLocaleDateString();
+})
+
+onMounted(() => {
+    articleStore.getArticle(router.currentRoute.value.params.id);
+})
 
 </script>
 <template>
 <div class="max-w-6xl mx-auto bg-indigo-100 rounded-lg p-6 mb-4">
-  <h2 class="text-2xl font-bold text-center mb-4">Selected Blog Title</h2>
-  <div class="text-center text-gray-600 mb-4">Author Name | Date Published</div>
+  <h2 class="text-2xl font-bold text-center mb-4">{{ article.title }}</h2>
+  <div class="text-center text-gray-600 mb-4">{{ article.author?.name }} | {{ publishDate }}</div>
   <div class="text-justify">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor bibendum nisi, a venenatis felis rutrum vel. Maecenas lacinia sagittis velit, nec tristique elit aliquam nec. Nulla facilisi. Proin vitae felis eget elit ultricies varius. Sed feugiat purus sit amet purus vehicula, sed tincidunt tortor bibendum.</p>
-      <p>Mauris consectetur ex vitae urna dictum, nec bibendum dolor pulvinar. Nulla ac aliquet libero. Curabitur non nisi justo. Aliquam erat volutpat. Sed lobortis sapien vitae magna suscipit, nec laoreet ante malesuada. Sed non commodo metus, et ultrices ligula. Integer vestibulum scelerisque quam ut posuere.</p>
+    {{ article.content }}
   </div>
 </div>
 
-<LikesAndCommentsCounter />
-<CommentItem />
+<LikesAndCommentsCounter :article="article"/>
+<CommentList />
 
 <div class="flex justify-center" v-if="!showCommentEditor">
     <button

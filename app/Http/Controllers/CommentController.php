@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Comment\CreateCommentRequest;
-use App\Http\Resources\Comment\CommentResource;
+use App\Http\Resources\CommentResource;
+use App\Models\Article;
 use App\Models\Comment;
 use App\Services\CommentService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -25,10 +25,10 @@ class CommentController extends Controller
      * 
      * @return CommentResource
      */
-    public function store(CreateCommentRequest $request): CommentResource
+    public function store(Article $article, CreateCommentRequest $request): CommentResource
     {
         return CommentResource::make(
-            $this->commentService->createComment($request->validated()),
+            $this->commentService->createComment($article, $request->validated()),
             Response::HTTP_CREATED
         );
     }
@@ -38,10 +38,10 @@ class CommentController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Article $article): AnonymousResourceCollection
     {
         return CommentResource::collection(
-            Comment::all()->orderBy('createdAt', 'desc'),
+            $this->commentService->getComments($article),
             Response::HTTP_OK
         );
     }

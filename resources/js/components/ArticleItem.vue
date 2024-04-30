@@ -3,19 +3,20 @@ import { defineEmits, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import { Article } from '../types/Articles';
 
-const props = defineProps({
+interface ArticleItemInterface {
   article: Article
-});
+}
+const props = defineProps<ArticleItemInterface>();
 
 const { article } = toRefs(props);
 const emits = defineEmits(['deleteArticle']);
 const router = useRouter();
 const openArticle = () => {
-  router.push({ name: 'show-article', params: { id: 1 } });
+  router.push({ name: 'show-article', params: { id: article.value.key } });
 }
 
 const deleteArticle = () => {
-  emits('deleteArticle', true);
+  emits('deleteArticle', article.value.key);
 }
 </script>
 <template>

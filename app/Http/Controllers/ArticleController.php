@@ -40,7 +40,7 @@ class ArticleController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return ArticleResource::collection(
-            Article::all(),
+            Article::all()->sortByDesc(Article::CREATED_AT),
             Response::HTTP_OK
         );
     }
@@ -74,16 +74,16 @@ class ArticleController extends Controller
     }
 
     /**
-     * delete
+     * destroy
      *
      * @param Article $article
      * 
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(Article $article): Response
+    public function destroy(Article $article): JsonResponse
     {
         $article->delete();
-        return JsonResponse::make(
+        return new JsonResponse(
             null,
             Response::HTTP_NO_CONTENT
         );

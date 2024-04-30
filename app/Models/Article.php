@@ -29,17 +29,22 @@ class Article extends Model
     protected static function boot() {
         static::creating(function ($article) {
             $article->key = Uuid::uuid4()->toString();
-            $article->author = 1;
+            $article->author = auth()->user()->id;
         });
         parent::boot();
     }
 
-    protected function authors() {
+    public function authors() {
         return $this->belongsTo(User::class, 'author', 'id');
     }
     
-    protected function comments()
+    public function comments()
     {
         return $this->hasMany(Comment::class, 'articleKey', 'key');
+    }
+
+    public function upvotes()
+    {
+        return $this->hasMany(Upvote::class, 'articleKey', 'key');
     }
 }

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Comment;
+namespace App\Http\Resources;
 
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource
-{
-    public static $wrap = false;
-    
+{   
     /**
      * Transform the resource into an array.
      *
