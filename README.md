@@ -1,10 +1,9 @@
 # Sun* Bulletin
 
-
+## Setup:
+- run ```sh setup.sh```
 ## 📝 Notes:
-- Acounts are pre-made, please run the code below.
-    ```php artisan db:seed --class=UserSeeder```
-- Below are the accounts:
+- Acounts are pre-made only. Below are the accounts:
     - username: sun_asterisk | password: secret
     - username: user_asterisk | password: secret
 
