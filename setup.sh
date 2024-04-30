@@ -43,16 +43,6 @@ set -e
   sleep 5
   docker-compose run --rm npm install
 
-    echo ""
-  echo ""
-  printf "$green" "#################################################################"
-  printf "$green" "# "
-  printf "$green" "# Run NPM Dev"
-  printf "$green" "# "
-  printf "$green" "#################################################################"
-  sleep 5
-  docker-compose run --rm npm run dev
-
   echo ""
   echo ""
   printf "$green" "#################################################################"
@@ -69,7 +59,17 @@ set -e
   echo ""
   printf "$green" "#################################################################"
   printf "$green" "# "
-  printf "$green" "# Bulletin installed!"
+  printf "$green" "# Bulletin installed! Please wait for NPM Dev to start."
   printf "$green" "# "
   printf "$green" "#################################################################"
+
+  echo ""
+  echo ""
+  printf "$green" "#################################################################"
+  printf "$green" "# "
+  printf "$green" "# Run NPM Dev"
+  printf "$green" "# "
+  printf "$green" "#################################################################"
+  sleep 1
+  docker-compose run --rm npm run dev
 fi
