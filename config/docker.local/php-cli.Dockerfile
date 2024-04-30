@@ -1,4 +1,4 @@
-FROM php:8.0.17-cli-alpine
+FROM php:8.2-cli-alpine
 
 RUN apk update && apk add curl git wget
 
@@ -6,9 +6,9 @@ RUN apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS
 
 RUN pecl update-channels
 
-RUN docker-php-ext-install pdo pdo_mysql bcmath sockets opcache && docker-php-ext-enable opcache && pecl install apcu && docker-php-ext-enable apcu && pecl install pcov && docker-php-ext-enable pcov
+RUN apk add --no-cache linux-headers
 
-RUN apk add rabbitmq-c-dev && pecl install amqp-1.11.0 && docker-php-ext-enable amqp
+RUN docker-php-ext-install pdo pdo_mysql bcmath sockets opcache && docker-php-ext-enable opcache && pecl install apcu && docker-php-ext-enable apcu && pecl install pcov && docker-php-ext-enable pcov
 
 RUN apk add --no-cache yaml-dev
 

@@ -1,4 +1,4 @@
-FROM composer:2.0.12
+FROM composer:latest
 
 RUN docker-php-ext-install opcache && docker-php-ext-enable opcache
 

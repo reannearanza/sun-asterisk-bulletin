@@ -2,6 +2,19 @@ version: '3.8'
 
 services:
 
+  npm:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./config/docker.local/npm.Dockerfile
+    volumes:
+      - "./:/var/www/html:delegated"
+      - 'npm_cache:/root/.npm'
+    networks:
+      - 'network-sun-asterisk'
+    tty: true
+    container_name: 'sun-asterisk-npm'
+
   mysql:
     build:
       context: .
@@ -99,3 +112,4 @@ volumes:
   mysql_data:
   elasticsearch_data:
   composer_cache:
+  npm_cache:
