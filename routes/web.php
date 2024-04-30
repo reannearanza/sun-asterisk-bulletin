@@ -19,8 +19,6 @@ use Illuminate\Http\Request;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('{any}', function () {
-        return view('base');
-    })->where('any', '.*'); 
-});
+Route::get('{any}', function () {
+    return view('base');
+})->where('any', '.*'); 
