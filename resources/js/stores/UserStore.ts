@@ -22,10 +22,10 @@ const setup = () => {
         password: password
       }).then(response => {
         user.value = response.data;
-        isAuthenticated.value = true;
+        localStorage.setItem('token', user.value.token);
         router.push({ name: 'articles' });
           axios.interceptors.request.use((config) => {
-            config.headers['Authorization'] = `Bearer ${user.value.token}`;
+            config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
             return config;
           })
       });
@@ -35,7 +35,7 @@ const setup = () => {
   const logout = () => {
     axios.post('/logout').then(response => {
       user.value = {} as User;
-      isAuthenticated.value = false;
+      localStorage.removeItem('token');
       router.push({ name: 'login' });
     });
   }

@@ -1,9 +1,39 @@
+import axios from 'axios';
+
 export const Routes = [
+  {
+    path: '/',
+    name: 'app',
+    component: () => import('./app.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('token')) {
+        return next({ name: 'login' });
+      }
+
+      axios.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        return config;
+      });
+
+      return next({ name: 'articles' });
+    },
+  },
   {
     path: '/articles',
     name: 'home',
-    meta: { requiresAuth: true },
     component: () => import('./views/Home.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('token')) {
+        return next({ name: 'login' });
+      }
+
+      axios.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        return config;
+      });
+
+      return next();
+    },
     children: [
       {
         path: '',
@@ -11,12 +41,12 @@ export const Routes = [
         component: () => import('./views/ArticleList.vue')
       },
       {
-        path: ':id',
+        path: '/articles/:id',
         name: 'show-article',
         component: () => import('./views/ShowArticle.vue')
       },
       {
-        path: 'create',
+        path: '/articles/create',
         name: 'create-article',
         component: () => import('./views/CreateArticle.vue')
       }
