@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
  
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('{any}', function () {
     return view('base');

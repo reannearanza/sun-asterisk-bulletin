@@ -15,12 +15,23 @@ const setup = () => {
   const isAuthenticated = ref(false);
   const router = useRouter();
 
-  const login = (username: string, password: string) => {
+  const login = (payload: any) => {
     axios.get('/sanctum/csrf-cookie').then(response => {
-      axios.post('/login', {
-        username: username,
-        password: password
-      }).then(response => {
+      axios.post('/login', payload).then(response => {
+        user.value = response.data;
+        localStorage.setItem('token', user.value.token);
+        router.push({ name: 'articles' });
+          axios.interceptors.request.use((config) => {
+            config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+            return config;
+          })
+      });
+    });
+  }
+
+  const register = (payload: any) => {
+    axios.get('/sanctum/csrf-cookie').then(response => {
+      axios.post('/register', payload).then(response => {
         user.value = response.data;
         localStorage.setItem('token', user.value.token);
         router.push({ name: 'articles' });
@@ -44,7 +55,8 @@ const setup = () => {
     user,
     isAuthenticated,
     login,
-    logout
+    logout,
+    register
   }
 }
 
