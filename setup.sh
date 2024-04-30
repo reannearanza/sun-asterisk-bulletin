@@ -5,6 +5,24 @@ set -e
 
   echo ""
   echo ""
+  printf "$green" "#################################################################"
+  printf "$green" "# "
+  printf "$green" "# Please wait until the installation is complete."
+  printf "$green" "# "
+  printf "$green" "#################################################################"
+  echo ""
+  
+  echo ""
+  printf "$green" "#################################################################"
+  printf "$green" "# "
+  printf "$green" "# Setting .env"
+  printf "$green" "# "
+  printf "$green" "#################################################################"
+  sleep 1
+  cp .env.example .env
+  
+  echo ""
+  echo ""
   printf "$green" "##################################################################"
   printf "$green" "# "
   printf "$green" "# Building docker images"
@@ -42,7 +60,7 @@ set -e
   printf "$green" "#################################################################"
   sleep 5
   docker-compose run --rm npm install
-
+  
   echo ""
   echo ""
   printf "$green" "#################################################################"
